@@ -97,24 +97,26 @@ module.exports = {
             await page.keyboard.press('Enter')
 
             // Check tab title
-            await sleep(pingtime * 100)
             console.log("Checking login status...")
+            await page.waitForNavigation({
+                waitUntil: 'networkidle2',
+            });
             const uri = await page.url()
             if (uri.includes('accounts.google.com/signin') && !uri.includes('admin.google.com/a/cpanel')) {
-                await sleep(pingtime * 10)
+                await sleep(pingtime)
                 await browser.close()
                 throw new Error("Your password is wrong! Please check you password and try again.")
             } else if (uri.includes('admin.google.com/a/cpanel') && !uri.includes('accounts.google.com/signin')) {
-                await sleep(pingtime * 10)
+                await sleep(pingtime)
                 await browser.close()
                 throw new Error("This account have no right to access youtube.com! Please try another account!")
             } else if (uri == "https://www.youtube.com/") {
                 console.log("Successfully logged in!\nSuccessfully verified your account!")
-                await sleep(pingtime * 10)
+                await sleep(pingtime)
                 success = true
                 const cookies = await page.cookies();
-                await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
-                require("./getcookie").gc(email, pass)
+                await fs.writeFile('../cookies.json', JSON.stringify(cookies, null, 2));
+                require("./getcookie").gc(email, pass, pingtime)
                 await browser.close()
             } else {
                 console.log("An unexpected error occurred!\nPleace check the popped out window to check whats wrong and post an issue to:\nhttps://github.com/ItzMiracleOwO/yt-cookier/issues")
