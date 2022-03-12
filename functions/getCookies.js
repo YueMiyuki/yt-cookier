@@ -14,7 +14,7 @@ function sleep(ms) {
 }
 
 module.exports = {
-    gc: async function (email, pass, pingtime) {
+    getCookie: async function () {
 
         const StealthPlugin = require('puppeteer-extra-plugin-stealth')
         puppeteer.use(StealthPlugin())
@@ -26,21 +26,27 @@ module.exports = {
         const navigationPromise = page.waitForNavigation()
 
         try {
-            const cookiesString = await fs.readFile('./cookies.json');
+            const cookiesString = await fs.readFile('./LoginCookies.json');
             const cookies = JSON.parse(cookiesString);
             await page.setCookie(...cookies);
 
             // Opening YouTube.com
-            page.goto("https://www.youtube.com");
+            await page.goto("https://www.youtube.com/watch?v=x8VYWazR5mE");
             await navigationPromise
 
-            console.log("There we go!")
+            const PageCookies = await page.cookies();
+                var content = await page._client.send('Network.getAllCookies');
+                await fs.writeFile('./DEBUG/new_cookies.json', JSON.stringify(content, null, 4));
+                await fs.writeFile('./DEBUG/page_cookies.json', JSON.stringify(PageCookies, null, 4));
+                await browser.close()
+                
+            return PageCookies
 
         } catch (e) {
-            console.log(e)
+            throw new Error(e)
             
         } finally {
-            // nothing here
+            await browser.close()
         }
     }
 }
