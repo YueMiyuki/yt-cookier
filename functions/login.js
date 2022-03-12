@@ -36,13 +36,16 @@ hosts.forEach(function (host) {
             } else if (res.avg >= 61) {
                 pingtime = 1000
             }
-            console.log(`Your ping time to youtube.com is ${res.avg} ms , so we will wait for ${pingtime*100} ms to ensure the login status!`)
+            console.log(`Your ping time to youtube.com is ${res.avg} ms`)
             if (pingtime > 600) console.log("The ping it too high, your connection would properly timeout, but we will try our best with it!")
         });
 });
 
 module.exports = {
-    login: async function (email, pass) {
+    login: async function ({
+        email,
+        pass
+    }) {
 
         const StealthPlugin = require('puppeteer-extra-plugin-stealth')
         puppeteer.use(StealthPlugin())
@@ -71,7 +74,7 @@ module.exports = {
                 sleep(pingtime)
                 let select2 = await page.waitForSelector('input[type="email"]')
                 if (!select2) {
-                    console.log("Connection TIMEOUT!")
+                    throw new Error("Connection TIMEOUT!")
                 } else(
                     select = await page.waitForSelector('input[type="email"]')
                 )
@@ -105,18 +108,16 @@ module.exports = {
             if (uri.includes('accounts.google.com/signin') && !uri.includes('admin.google.com/a/cpanel')) {
                 await sleep(pingtime)
                 await browser.close()
-                throw new Error("Your password is wrong! Please check you password and try again.")
+                throw new Error("Your password is wrong or 2FA on this account is enabled! Please check and try again.")
             } else if (uri.includes('admin.google.com/a/cpanel') && !uri.includes('accounts.google.com/signin')) {
                 await sleep(pingtime)
                 await browser.close()
                 throw new Error("This account have no right to access youtube.com! Please try another account!")
             } else if (uri == "https://www.youtube.com/") {
                 console.log("Successfully logged in!\nSuccessfully verified your account!")
-                await sleep(pingtime)
-                success = true
                 const cookies = await page.cookies();
-                await fs.writeFile('../cookies.json', JSON.stringify(cookies, null, 2));
-                require("./getcookie").gc(email, pass, pingtime)
+                await fs.writeFile('./LoginCookies.json', JSON.stringify(cookies, null, 2));
+                // require("./getCookies.js").getCookie()
                 await browser.close()
             } else {
                 console.log("An unexpected error occurred!\nPleace check the popped out window to check whats wrong and post an issue to:\nhttps://github.com/ItzMiracleOwO/yt-cookier/issues")
@@ -125,9 +126,9 @@ module.exports = {
             }
 
         } catch (e) {
-            console.log(e)
+            throw new Error(e)
         } finally {
-            // nothing here
+            await browser.close()
         }
     }
 }
