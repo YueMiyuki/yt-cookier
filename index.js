@@ -1,9 +1,9 @@
-const {login} = require("./functions/login")
-const {getCookie} = require("./functions/getCookies")
-const {getHeaders} = require("./functions/getHeaders")
+const {login} = require("./functions/login");
+const {getCookie} = require("./functions/getCookies");
+const {getHeaders} = require("./functions/getHeaders");
 
 module.exports = {
-    login,
-    getCookie,
-    getHeaders,
-}
+  login,
+  getCookie,
+  getHeaders,
+};
