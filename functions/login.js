@@ -120,7 +120,7 @@ module.exports = {
                     if (err) throw err;
                 };
         // require("./getCookies.js").getCookie()
-        // await browser.close();
+        await browser.close();
       } else {
         console.log("An unexpected error occurred!\nPleace check the popped out window to check whats wrong and post an issue to:\nhttps://github.com/ItzMiracleOwO/yt-cookier/issues");
         sleep(pingtime * 100);
