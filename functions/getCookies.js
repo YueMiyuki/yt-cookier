@@ -36,8 +36,8 @@ module.exports = {
 
       const PageCookies = await page.cookies();
       var content = await page._client.send("Network.getAllCookies");
-      fs.writeFileSync(`./DEBUG/new_cookies.json` , JSON.stringify(content ,null,4))
-      fs.writeFileSync(`./DEBUG/page_cookies.json` , JSON.stringify(PageCookies ,null,4))
+      fs.writeFileSync("./DEBUG/new_cookies.json" , JSON.stringify(content ,null,4));
+      fs.writeFileSync("./DEBUG/page_cookies.json" , JSON.stringify(PageCookies ,null,4));
 
       await browser.close();
                 
@@ -47,7 +47,7 @@ module.exports = {
       throw new Error(e);
             
     } finally {
-        await browser.close();
+      await browser.close();
     }
   }
 };

@@ -33,7 +33,7 @@ module.exports = {
         if (request.isInterceptResolutionHandled()) return;   
         let requestHeaders = request.headers(); //getting headers of your request
         console.log(requestHeaders);
-         fs.writeFileSync(`./DEBUG/headers.json` , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
+        fs.writeFileSync("./DEBUG/headers.json" , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
           if (err) throw err;
         };
        
@@ -41,12 +41,12 @@ module.exports = {
       });
 
     } catch (e) {
-      console.log(e)
+      console.log(e);
       throw new Error(e);
     } finally {
-     setTimeout(async () => {
-       await browser.close();
-     }, 5*1000);
+      setTimeout(async () => {
+        await browser.close();
+      }, 5*1000);
     }
   }
 };
