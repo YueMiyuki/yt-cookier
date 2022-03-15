@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer-extra");
 const ping = require("ping");
-const fs = require("fs").promises;
+const fs = require("fs");
 
 const hosts = ["youtube.com"];
 let pingtime = null;
@@ -116,7 +116,9 @@ module.exports = {
       } else if (uri == "https://www.youtube.com/") {
         console.log("Successfully logged in!\nSuccessfully verified your account!");
         const cookies = await page.cookies();
-        await fs.writeFile("./LoginCookies.json", JSON.stringify(cookies, null, 2));
+         fs.writeFileSync(`./LoginCookies.json` , JSON.stringify(cookies ,null,2)), function (err) {
+                    if (err) throw err;
+                };
         // require("./getCookies.js").getCookie()
         await browser.close();
       } else {

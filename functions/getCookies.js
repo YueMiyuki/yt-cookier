@@ -3,7 +3,7 @@ const ping = require("ping");
 
 const hosts = ["youtube.com"];
 let pingtime = null;
-const fs = require("fs").promises;
+const fs = require("fs");
 let ptm = null;
 let success = false;
 
@@ -26,7 +26,7 @@ module.exports = {
     const navigationPromise = page.waitForNavigation();
 
     try {
-      const cookiesString = await fs.readFile("./LoginCookies.json");
+      const cookiesString = await fs.readFileSync("./LoginCookies.json");
       const cookies = JSON.parse(cookiesString);
       await page.setCookie(...cookies);
 
@@ -36,8 +36,9 @@ module.exports = {
 
       const PageCookies = await page.cookies();
       var content = await page._client.send("Network.getAllCookies");
-      await fs.writeFile("./DEBUG/new_cookies.json", JSON.stringify(content, null, 4));
-      await fs.writeFile("./DEBUG/page_cookies.json", JSON.stringify(PageCookies, null, 4));
+      fs.writeFileSync(`./DEBUG/new_cookies.json` , JSON.stringify(content ,null,4))
+      fs.writeFileSync(`./DEBUG/page_cookies.json` , JSON.stringify(PageCookies ,null,4))
+
       await browser.close();
                 
       return PageCookies;
@@ -46,7 +47,7 @@ module.exports = {
       throw new Error(e);
             
     } finally {
-      await browser.close();
+        await browser.close();
     }
   }
 };

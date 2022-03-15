@@ -2,11 +2,7 @@ const puppeteer = require("puppeteer-extra");
 const ping = require("ping");
 
 const hosts = ["youtube.com"];
-let pingtime = null;
-const fs = require("fs").promises;
-let ptm = null;
-let success = false;
-
+const fs = require("fs");
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -26,7 +22,7 @@ module.exports = {
     const navigationPromise = page.waitForNavigation();
 
     try {
-      const cookiesString = await fs.readFile("./page_cookies.json");
+      const cookiesString = await fs.readFileSync("./page_cookies.json");
       const cookies = JSON.parse(cookiesString);
       await page.setCookie(...cookies);
 
@@ -35,16 +31,22 @@ module.exports = {
             
       page.on("request", async request => {
         if (request.isInterceptResolutionHandled()) return;   
-        const requestHeaders = request.headers(); //getting headers of your request
+        let requestHeaders = request.headers(); //getting headers of your request
         console.log(requestHeaders);
-        await fs.writeFile("./DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4));
+         fs.writeFileSync(`./DEBUG/headers.json` , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
+          if (err) throw err;
+        };
+       
+        return requestHeaders;
       });
-      return requestHeaders;
 
     } catch (e) {
+      console.log(e)
       throw new Error(e);
     } finally {
-      await browser.close();
+     setTimeout(async () => {
+       await browser.close();
+     }, 5*1000);
     }
   }
 };
