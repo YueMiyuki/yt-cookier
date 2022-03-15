@@ -47,9 +47,7 @@ module.exports = {
       throw new Error(e);
             
     } finally {
-      setTimeout(async () => {
         await browser.close();
-      }, 5*1000);
     }
   }
 };
