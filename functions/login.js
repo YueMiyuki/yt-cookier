@@ -130,7 +130,7 @@ module.exports = {
     } catch (e) {
       throw new Error(e);
     } finally {
-      // await browser.close();
+      await browser.close();
     }
   }
 };
