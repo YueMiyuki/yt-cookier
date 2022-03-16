@@ -22,7 +22,7 @@ module.exports = {
     const navigationPromise = page.waitForNavigation();
 
     try {
-      const cookiesString = await fs.readFileSync("./page_cookies.json");
+      const cookiesString = await fs.readFileSync("./node_modules/ytcf/LoginCookies.json");
       const cookies = JSON.parse(cookiesString);
       await page.setCookie(...cookies);
 
@@ -33,7 +33,7 @@ module.exports = {
         if (request.isInterceptResolutionHandled()) return;   
         let requestHeaders = request.headers(); //getting headers of your request
         console.log(requestHeaders);
-        fs.writeFileSync("./DEBUG/headers.json" , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
+        fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json" , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
           if (err) throw err;
         };
        

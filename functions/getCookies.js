@@ -26,7 +26,7 @@ module.exports = {
     const navigationPromise = page.waitForNavigation();
 
     try {
-      const cookiesString = await fs.readFileSync("./LoginCookies.json");
+      const cookiesString = await fs.readFileSync("./node_modules/ytcf/LoginCookies.json");
       const cookies = JSON.parse(cookiesString);
       await page.setCookie(...cookies);
 
@@ -36,8 +36,8 @@ module.exports = {
 
       const PageCookies = await page.cookies();
       var content = await page._client.send("Network.getAllCookies");
-      fs.writeFileSync("./DEBUG/new_cookies.json" , JSON.stringify(content ,null,4));
-      fs.writeFileSync("./DEBUG/page_cookies.json" , JSON.stringify(PageCookies ,null,4));
+      fs.writeFileSync("./node_modules/ytcf/new_cookies.json" , JSON.stringify(content ,null,4));
+      fs.writeFileSync("./node_modules/ytcf/DEBUG/page_cookies.json" , JSON.stringify(PageCookies ,null,4));
 
       await browser.close();
                 
