@@ -34,8 +34,7 @@ module.exports = {
 
       page.on("request", async request => {
         if (request.isInterceptResolutionHandled()) return;
-        let requestHeaders = request.headers(); //getting headers of your request
-        console.log(requestHeaders);
+        const requestHeaders = request.headers(); //getting headers of your request
         fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
           function (err, res) {
             if (err) throw err;
@@ -54,9 +53,7 @@ module.exports = {
       console.log(e);
       throw new Error(e);
     } finally {
-      setTimeout(async () => {
-        await browser.close();
-      }, 5 * 1000);
+      await browser.close();
     }
   }
 };
