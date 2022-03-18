@@ -3,6 +3,7 @@ const ping = require("ping");
 
 const hosts = ["youtube.com"];
 const fs = require("fs");
+
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -10,7 +11,9 @@ function sleep(ms) {
 }
 
 module.exports = {
-  getHeaders: async function () {
+  getHeaders: async function (url) {
+
+    console.log("Attempting to get headers")
 
     const StealthPlugin = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(StealthPlugin());
@@ -27,16 +30,23 @@ module.exports = {
       await page.setCookie(...cookies);
 
       // Opening YouTube.com
-      await page.goto("https://www.youtube.com/watch?v=x8VYWazR5mE");
-            
+      await page.goto(url);
+
       page.on("request", async request => {
-        if (request.isInterceptResolutionHandled()) return;   
+        if (request.isInterceptResolutionHandled()) return;
         let requestHeaders = request.headers(); //getting headers of your request
         console.log(requestHeaders);
-        fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json" , JSON.stringify(requestHeaders ,null,4)), function (err , res ) {
-          if (err) throw err;
-        };
-       
+        fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
+          function (err, res) {
+            if (err) throw err;
+          };
+
+        const LoginCookies = await page.cookies();
+        fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
+          function (err) {
+            if (err) throw err;
+          };
+
         return requestHeaders;
       });
 
@@ -46,7 +56,7 @@ module.exports = {
     } finally {
       setTimeout(async () => {
         await browser.close();
-      }, 5*1000);
+      }, 5 * 1000);
     }
   }
 };

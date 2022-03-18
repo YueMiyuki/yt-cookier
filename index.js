@@ -1,6 +1,12 @@
-const {login} = require("./functions/login");
-const {getCookie} = require("./functions/getCookies");
-const {getHeaders} = require("./functions/getHeaders");
+const {
+  login
+} = require("ytcf/functions/login");
+const {
+  getCookie
+} = require("ytcf/functions/getCookies");
+const {
+  getHeaders
+} = require("ytcf/functions/getHeaders");
 
 module.exports = {
   login,
