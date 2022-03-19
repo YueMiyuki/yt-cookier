@@ -14,7 +14,7 @@ function sleep(ms) {
 }
 
 module.exports = {
-  getCookie: async function(url) {
+  getCookie: async function (url) {
     return new Promise(async (resolve, reject) => {
 
       console.log("Attempting to get cookies");
@@ -38,19 +38,26 @@ module.exports = {
         await navigationPromise;
 
         const PageCookies = await page.cookies();
-        var content = await page._client.send("Network.getAllCookies");
-        fs.writeFileSync("./node_modules/ytcf/new_cookies.json", JSON.stringify(content, null, 4));
+        var AllCookies = await page._client.send("Network.getAllCookies");
+        fs.writeFileSync("./node_modules/ytcf/new_cookies.json", JSON.stringify(AllCookies, null, 4));
         fs.writeFileSync("./node_modules/ytcf/DEBUG/page_cookies.json", JSON.stringify(PageCookies, null, 4));
 
         const LoginCookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-        function(err) {
-          if (err) throw err;
-        };
+          function (err) {
+            if (err) throw err;
+          };
 
         await browser.close();
 
-        resolve(PageCookies);
+        const cookieString = fs.readFileSync("./node_modules/ytcf/new_cookies.json");
+        const Rcookies = cookieString.cookies.map(({
+            name,
+            value
+          }) =>
+          `${name}=${value}`).join("; ")
+
+        resolve(Rcookies);
 
       } catch (e) {
         reject(e);

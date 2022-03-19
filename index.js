@@ -1,12 +1,12 @@
 const {
   login
-} = require("./functions/login");
+} = require("ytcf/functions/login");
 const {
   getCookie
-} = require("./functions/getCookies");
+} = require("ytcf/functions/getCookies");
 const {
   getHeaders
-} = require("./functions/getHeaders");
+} = require("ytcf/functions/getHeaders");
 
 module.exports = {
   login,
