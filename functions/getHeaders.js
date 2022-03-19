@@ -3,12 +3,17 @@ const ping = require("ping");
 
 const hosts = ["youtube.com"];
 const fs = require("fs");
+const {
+  callbackify
+} = require("util");
 
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
+
+let idle = null
 
 module.exports = {
   getHeaders: async function (url) {
@@ -45,9 +50,14 @@ module.exports = {
           function (err) {
             if (err) throw err;
           };
-
-        return requestHeaders;
       });
+
+      await page.waitForNavigation({
+        waitUntil: 'networkidle2',
+      });
+      const json = fs.readFileSync("./node_modules/ytcf/DEBUG/headers.json")
+      const headers = JSON.parse(json);
+      return headers
 
     } catch (e) {
       console.log(e);
