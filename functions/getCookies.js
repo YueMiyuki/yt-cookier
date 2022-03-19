@@ -16,7 +16,7 @@ function sleep(ms) {
 module.exports = {
   getCookie: async function (url) {
 
-    console.log("Attempting to get cookies")
+    console.log("Attempting to get cookies");
 
     const StealthPlugin = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(StealthPlugin());
@@ -43,9 +43,9 @@ module.exports = {
 
       const LoginCookies = await page.cookies();
       fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-        function (err) {
-          if (err) throw err;
-        };
+      function (err) {
+        if (err) throw err;
+      };
 
       await browser.close();
 

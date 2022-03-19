@@ -13,12 +13,12 @@ function sleep(ms) {
   });
 }
 
-let idle = null
+let idle = null;
 
 module.exports = {
   getHeaders: async function (url) {
 
-    console.log("Attempting to get headers")
+    console.log("Attempting to get headers");
 
     const StealthPlugin = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(StealthPlugin());
@@ -41,23 +41,23 @@ module.exports = {
         if (request.isInterceptResolutionHandled()) return;
         const requestHeaders = request.headers(); //getting headers of your request
         fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
-          function (err, res) {
-            if (err) throw err;
-          };
+        function (err, res) {
+          if (err) throw err;
+        };
 
         const LoginCookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-          function (err) {
-            if (err) throw err;
-          };
+        function (err) {
+          if (err) throw err;
+        };
       });
 
       await page.waitForNavigation({
-        waitUntil: 'networkidle2',
+        waitUntil: "networkidle2",
       });
-      const json = fs.readFileSync("./node_modules/ytcf/DEBUG/headers.json")
+      const json = fs.readFileSync("./node_modules/ytcf/DEBUG/headers.json");
       const headers = JSON.parse(json);
-      return headers
+      return headers;
 
     } catch (e) {
       console.log(e);
