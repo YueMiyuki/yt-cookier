@@ -50,7 +50,7 @@ module.exports = {
 
         await browser.close();
 
-        reslove(PageCookies);
+        resolve(PageCookies);
 
       } catch (e) {
         reject(e);
