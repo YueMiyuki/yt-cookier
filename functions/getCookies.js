@@ -44,9 +44,9 @@ module.exports = {
 
         const LoginCookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-          function(err) {
-            if (err) throw err;
-          };
+        function(err) {
+          if (err) throw err;
+        };
 
         await browser.close();
 
