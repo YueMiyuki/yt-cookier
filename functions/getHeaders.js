@@ -56,9 +56,8 @@ module.exports = {
         await page.waitForNavigation({
           waitUntil: "networkidle2",
         });
-        const json = fs.readFileSync("./node_modules/ytcf/DEBUG/headers.json");
-        const headers = JSON.parse(json);
-        reslove(headers);
+        const headers = require("./node_modules/ytcf/DEBUG/headers.json")
+        resolve(headers);
       } catch (e) {
         reject(e);
       } finally {
