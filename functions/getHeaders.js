@@ -1,22 +1,10 @@
 const puppeteer = require("puppeteer-extra");
-const ping = require("ping");
+var path = require('path');
 
-const hosts = ["youtube.com"];
 const fs = require("fs");
-const {
-  callbackify
-} = require("util");
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-let idle = null;
 
 module.exports = {
-  getHeaders: function(url) {
+  getHeaders: function (url) {
     return new Promise(async (resolve, reject) => {
 
       console.log("Attempting to get headers");
@@ -41,23 +29,25 @@ module.exports = {
         page.on("request", async request => {
           if (request.isInterceptResolutionHandled()) return;
           const requestHeaders = request.headers(); //getting headers of your request
-          fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
-          function(err, res) {
-            if (err) throw err;
-          };
+          const array = Object.entries(requestHeaders); 
+          if (array.indexOf("x-youtube-identity-token")) {
+            await fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
+              function (err, res) {
+                if (err) throw err;
+              }
+          } else {}
 
           const LoginCookies = await page.cookies();
           fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-          function(err) {
-            if (err) throw err;
-          };
+            function (err) {
+              if (err) throw err;
+            };
         });
 
-        await page.waitForNavigation({
-          waitUntil: "networkidle2",
-        });
         const headers = require("./node_modules/ytcf/DEBUG/headers.json")
-        resolve(headers);
+        console.log(headers)
+
+        resolve(headers)
       } catch (e) {
         reject(e);
       } finally {
