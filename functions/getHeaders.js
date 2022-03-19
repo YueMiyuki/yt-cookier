@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer-extra");
-var path = require('path');
+var path = require("path");
 
 const fs = require("fs");
 
@@ -32,22 +32,22 @@ module.exports = {
           const array = Object.entries(requestHeaders); 
           if (array.indexOf("x-youtube-identity-token")) {
             await fs.writeFileSync("./node_modules/ytcf/DEBUG/headers.json", JSON.stringify(requestHeaders, null, 4)),
-              function (err, res) {
-                if (err) throw err;
-              }
+            function (err, res) {
+              if (err) throw err;
+            };
           } else {}
 
           const LoginCookies = await page.cookies();
           fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-            function (err) {
-              if (err) throw err;
-            };
+          function (err) {
+            if (err) throw err;
+          };
         });
 
-        const headers = require("./node_modules/ytcf/DEBUG/headers.json")
-        console.log(headers)
+        const headers = require("./node_modules/ytcf/DEBUG/headers.json");
+        console.log(headers);
 
-        resolve(headers)
+        resolve(headers);
       } catch (e) {
         reject(e);
       } finally {
