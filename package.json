@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "chromedriver": "^98.0.0",
+    "chromedriver": "^99.0.0",
     "ping": "^0.4.1",
     "ping-url": "^1.0.3",
     "puppeteer": "^13.5.1",
