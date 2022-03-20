@@ -8,7 +8,7 @@ function checkExistsWithTimeout(filePath, timeout) {
 
     var timer = setTimeout(function () {
       watcher.close();
-      reject(new Error('File did not exists and was not created during the timeout.'));
+      reject(new Error("File did not exists and was not created during the timeout."));
     }, timeout);
 
     fs.access(filePath, fs.constants.R_OK, function (err) {
@@ -22,7 +22,7 @@ function checkExistsWithTimeout(filePath, timeout) {
     var dir = path.dirname(filePath);
     var basename = path.basename(filePath);
     var watcher = fs.watch(dir, function (eventType, filename) {
-      if (eventType === 'rename' && filename === basename) {
+      if (eventType === "rename" && filename === basename) {
         clearTimeout(timer);
         watcher.close();
         resolve();
@@ -59,25 +59,25 @@ module.exports = {
         const array = Object.entries(requestHeaders);
         if (array.indexOf("x-youtube-identity-token")) {
           await fs.writeFileSync("./node_modules/ytcf/headers.json", JSON.stringify(requestHeaders, null, 4)),
-            function (err, res) {
-              if (err) throw err;
-            };
+          function (err, res) {
+            if (err) throw err;
+          };
         }
 
         const LoginCookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-          function (err) {
-            if (err) throw err;
-          };
+        function (err) {
+          if (err) throw err;
+        };
       });
 
       fs.watchFile("./node_modules/ytcf/LoginCookies.json", (curr, prev) => {});
       const headersString = fs.readFileSync("./node_modules/ytcf/headers.json");
       const headers = JSON.parse(headersString);
-      return headers
+      return headers;
 
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     } finally {
       await browser.close();
     }
