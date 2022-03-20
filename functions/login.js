@@ -114,9 +114,9 @@ module.exports = {
         console.log("Successfully logged in!\nSuccessfully verified your account!");
         const cookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(cookies, null, 2)),
-          function (err) {
-            if (err) throw err;
-          };
+        function (err) {
+          if (err) throw err;
+        };
         // require("./getCookies.js").getCookie()
         await browser.close();
       } else {
