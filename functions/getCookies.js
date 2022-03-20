@@ -1,17 +1,4 @@
 const puppeteer = require("puppeteer-extra");
-const ping = require("ping");
-
-const hosts = ["youtube.com"];
-let pingtime = null;
-const fs = require("fs");
-let ptm = null;
-let success = false;
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 module.exports = {
   getCookie: async function (url) {

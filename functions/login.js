@@ -4,8 +4,6 @@ const fs = require("fs");
 
 const hosts = ["youtube.com"];
 let pingtime = null;
-let ptm = null;
-let success = false;
 
 function sleep(ms) {
   return new Promise((resolve) => {

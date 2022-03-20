@@ -1,35 +1,8 @@
 const puppeteer = require("puppeteer-extra");
-var path = require("path");
 
 const fs = require("fs");
 
-function checkExistsWithTimeout(filePath, timeout) {
-  return new Promise(function (resolve, reject) {
-
-    var timer = setTimeout(function () {
-      watcher.close();
-      reject(new Error('File did not exists and was not created during the timeout.'));
-    }, timeout);
-
-    fs.access(filePath, fs.constants.R_OK, function (err) {
-      if (!err) {
-        clearTimeout(timer);
-        watcher.close();
-        resolve();
-      }
-    });
-
-    var dir = path.dirname(filePath);
-    var basename = path.basename(filePath);
-    var watcher = fs.watch(dir, function (eventType, filename) {
-      if (eventType === 'rename' && filename === basename) {
-        clearTimeout(timer);
-        watcher.close();
-        resolve();
-      }
-    });
-  });
-}
+const returnValue = null
 
 module.exports = {
   getHeaders: async function (url) {
@@ -71,10 +44,12 @@ module.exports = {
           };
       });
 
-      fs.watchFile("./node_modules/ytcf/LoginCookies.json", (curr, prev) => {});
-      const headersString = fs.readFileSync("./node_modules/ytcf/headers.json");
-      const headers = JSON.parse(headersString);
-      return headers
+      await fs.watchFile("./node_modules/ytcf/LoginCookies.json", (curr, prev) => {
+        const headersString = fs.readFileSync("./node_modules/ytcf/headers.json");
+        returnValue = JSON.parse(headersString);
+      });
+      
+      return returnValue
 
     } catch (e) {
       throw new Error(e)
