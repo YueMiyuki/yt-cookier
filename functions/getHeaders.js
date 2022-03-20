@@ -71,19 +71,15 @@ module.exports = {
           };
       });
 
-      await checkExistsWithTimeout("./node_modules/ytcf/headers.json", "10000")
-
+      fs.watchFile("./node_modules/ytcf/LoginCookies.json", (curr, prev) => {});
       const headersString = fs.readFileSync("./node_modules/ytcf/headers.json");
       const headers = JSON.parse(headersString);
       return headers
+
     } catch (e) {
       throw new Error(e)
     } finally {
       await browser.close();
-      fs.rmSync("./node_modules/ytcf/headers.json", {
-        force: true,
-      });
     }
-
   }
 };

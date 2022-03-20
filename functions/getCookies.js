@@ -42,7 +42,8 @@ module.exports = {
         await browser.close();
 
         const cookieString = fs.readFileSync("./node_modules/ytcf/cookies.json");
-        const Rcookies = cookieString.map(({
+        const array = JSON.parse(cookieString) 
+        const Rcookies = array.map(({
             name,
             value
           }) =>
