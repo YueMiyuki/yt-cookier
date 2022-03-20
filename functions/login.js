@@ -36,7 +36,6 @@ hosts.forEach(function (host) {
       } else if (res.avg >= 61) {
         pingtime = 1000;
       }
-      console.log(`Your ping time to youtube.com is ${res.avg} ms`);
       if (pingtime > 600) console.log("The ping it too high, your connection would properly timeout, but we will try our best with it!");
     });
 });
@@ -59,13 +58,13 @@ module.exports = {
     try {
       // Opening the sign in page
       page.goto("https://accounts.google.com/signin/v2/identifier" +
-                "?continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Den-US%26next%3D%252F" +
-                "&hl=zh-HK" +
-                "&passive=false" +
-                "&service=youtube" +
-                "&uilel=0t" +
-                "&flowName=GlifWebSignIn" +
-                "&flowEntry=AddSession");
+        "?continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Den-US%26next%3D%252F" +
+        "&hl=zh-HK" +
+        "&passive=false" +
+        "&service=youtube" +
+        "&uilel=0t" +
+        "&flowName=GlifWebSignIn" +
+        "&flowEntry=AddSession");
       await navigationPromise;
 
       // Find email box
@@ -116,9 +115,10 @@ module.exports = {
       } else if (uri == "https://www.youtube.com/") {
         console.log("Successfully logged in!\nSuccessfully verified your account!");
         const cookies = await page.cookies();
-        fs.writeFileSync("./node_modules/ytcf/LoginCookies.json" , JSON.stringify(cookies ,null,2)), function (err) {
-          if (err) throw err;
-        };
+        fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(cookies, null, 2)),
+          function (err) {
+            if (err) throw err;
+          };
         // require("./getCookies.js").getCookie()
         await browser.close();
       } else {
