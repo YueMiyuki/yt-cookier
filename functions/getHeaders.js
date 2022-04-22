@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer-extra");
 
 const fs = require("fs");
 
-const returnValue = null;
+var returnValue = null;
 
 module.exports = {
   getHeaders: async function (url) {
@@ -28,27 +28,26 @@ module.exports = {
 
       await page.on("request", async request => {
         const requestHeaders = request.headers(); //getting headers of your request
-        const array = Object.entries(requestHeaders);
-        console.log(array);
-        if (!array.indexOf("x-youtube-identity-token")) {
-          console.log(array);
-          fs.writeFileSync("./node_modules/ytcf/headers.json", JSON.stringify(requestHeaders, null, 4)),
-          function (err, res) {
-            if (err) throw err;
-          };
+        // console.log(requestHeaders)
+        const headers = JSON.stringify(requestHeaders)
+        if (headers.includes("x-youtube-identity-token")) {
+          returnValue = requestHeaders
+          await fs.writeFileSync("./node_modules/ytcf/headers.json", JSON.stringify(requestHeaders, null, 4)),
+            function (err, res) {
+              if (err) throw err;
+            };
         }
 
         const LoginCookies = await page.cookies();
-        fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-        function (err) {
-          if (err) throw err;
-        };
+        await fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
+          function (err) {
+            if (err) throw err;
+          };
       });
+      
+      if (returnValue === null) setTimeout(resolve, ms);
 
-      fs.watchFile("./node_modules/ytcf/LoginCookies.json", (curr, prev) => {});
-      const headersString = fs.readFileSync("./node_modules/ytcf/headers.json");
-      const headers = JSON.parse(headersString);
-      return headers;
+
 
     } catch (e) {
       throw new Error(e);
