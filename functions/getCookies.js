@@ -1,17 +1,5 @@
 const puppeteer = require("puppeteer-extra");
-const ping = require("ping");
-
-const hosts = ["youtube.com"];
-let pingtime = null;
-const fs = require("fs");
-let ptm = null;
-let success = false;
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+const fs = require("fs")
 
 module.exports = {
   getCookie: async function (url) {
@@ -37,12 +25,12 @@ module.exports = {
       await navigationPromise;
 
       const PageCookies = await page.cookies();
-      fs.writeFileSync("./node_modules/ytcf/cookies.json", JSON.stringify(PageCookies, null, 4));
+      const cookieStr = JSON.stringify(PageCookies, null, 4)
 
       await browser.close();
 
-      const cookieString = fs.readFileSync("./node_modules/ytcf/cookies.json");
-      const array = JSON.parse(cookieString);
+      // const cookieString = fs.readFileSync("./node_modules/ytcf/cookies.json");
+      const array = JSON.parse(cookieStr);
       const Rcookies = array.map(({
         name,
         value
@@ -54,7 +42,7 @@ module.exports = {
     } catch (e) {
       throw new Error(e);
     } finally {
-      await browser.close();
+      // await browser.close();
     }
   }
 };
