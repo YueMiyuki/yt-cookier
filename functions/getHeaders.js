@@ -37,7 +37,7 @@ module.exports = {
                             function(err, res) {
                                 if (err) throw err;
                             };
-                        resolve();
+                        resolve(returnValue);
                     }
 
                     const LoginCookies = await page.cookies();
@@ -46,9 +46,6 @@ module.exports = {
                             if (err) throw err;
                         };
                 });
-
-                return returnValue;
-
             } catch (e) {
                 throw new Error(e);
             } finally {}
