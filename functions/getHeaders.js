@@ -45,10 +45,8 @@ module.exports = {
         };
       });
       
-      if (returnValue === null) setTimeout(resolve, ms);
-
-
-
+      return returnValue
+      
     } catch (e) {
       throw new Error(e);
     } finally {}
