@@ -12,7 +12,7 @@ module.exports = {
 
         puppeteer.use(StealthPlugin());
 
-        Promise(resolve => {
+        Promise(async(resolve) => {
             const browser = await puppeteer.launch({
                 headless: false
             });
