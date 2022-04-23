@@ -45,7 +45,7 @@ module.exports = {
         };
       });
       
-      return returnValue
+      return returnValue;
       
     } catch (e) {
       throw new Error(e);
