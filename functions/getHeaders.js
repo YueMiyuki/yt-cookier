@@ -2,10 +2,9 @@ const puppeteer = require("puppeteer-extra");
 
 const fs = require("fs");
 
-var returnValue = null;
 
 module.exports = {
-  getHeaders: async function (url) {
+  getHeaders: async function (url, fn) {
 
     console.log("Attempting to get headers");
 
@@ -31,7 +30,7 @@ module.exports = {
         // console.log(requestHeaders)
         const headers = JSON.stringify(requestHeaders);
         if (headers.includes("x-youtube-identity-token")) {
-          returnValue = requestHeaders;
+          fn(requestHeaders);
           await fs.writeFileSync("./node_modules/ytcf/headers.json", JSON.stringify(requestHeaders, null, 4)),
           function (err, res) {
             if (err) throw err;
@@ -44,9 +43,6 @@ module.exports = {
           if (err) throw err;
         };
       });
-      
-      return returnValue;
-      
     } catch (e) {
       throw new Error(e);
     } finally {}
