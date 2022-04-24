@@ -17,7 +17,7 @@ module.exports = {
         headless: false,
         timeout: 0
       });
-      const pages = await browser.pages()
+      const pages = await browser.pages();
       const page = await pages[0];
       const navigationPromise = page.waitForNavigation();
 
@@ -36,14 +36,14 @@ module.exports = {
           if (headers.includes("x-youtube-identity-token")) {
             returnValue = requestHeaders;
             fs.writeFileSync("./node_modules/ytcf/headers.json", JSON.stringify(requestHeaders, null, 4)),
-              function (err, res) {
-                if (err) throw err;
-              };
+            function (err, res) {
+              if (err) throw err;
+            };
             const LoginCookies = await page.cookies();
             fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(LoginCookies, null, 2)), //Update Login
-              function (err) {
-                if (err) throw err;
-              }
+            function (err) {
+              if (err) throw err;
+            };
             await browser.close();
             resolve(returnValue);
 
@@ -56,6 +56,6 @@ module.exports = {
         // await browser.close();
       }
       // await browser.close();
-    })
+    });
   }
 };

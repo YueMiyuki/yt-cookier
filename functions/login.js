@@ -24,7 +24,7 @@ module.exports = {
       headless: false,
       timeout: 0
     });
-    const pages = await browser.pages()
+    const pages = await browser.pages();
     const page = await pages[0];
     const navigationPromise = page.waitForNavigation();
 
@@ -116,9 +116,9 @@ module.exports = {
         console.log("Successfully logged in!\nSuccessfully verified your account!");
         const cookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(cookies, null, 2)),
-          function (err) {
-            if (err) throw err;
-          };
+        function (err) {
+          if (err) throw err;
+        };
         // require("./getCookies.js").getCookie()
         await browser.close();
       } else {
