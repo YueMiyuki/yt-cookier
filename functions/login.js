@@ -11,33 +11,6 @@ function sleep(ms) {
   });
 }
 
-hosts.forEach(function (host) {
-  console.log("Pinging youtube.com...");
-  ping.promise.probe(host)
-    .then(function (res) {
-      const isAlive = res.alive;
-      var msg = isAlive ? "Host " + host + " is alive" + `\nTook ${res.avg} ms to reach ` + host : "Cannot connect to " + host + "!\nPlease check your connection and try again later.";
-      console.log(msg);
-      if (!isAlive) {
-        throw new Error("Connection TIMEOUT!");
-      }
-      if (res.avg < 5) {
-        pingtime = 90;
-      } else if (res.avg >= 5 && res.avg <= 10) {
-        pingtime = 100;
-      } else if (res.avg >= 11 && res.avg <= 19) {
-        pingtime = 150;
-      } else if (res.avg >= 20 && res.ave <= 29) {
-        pingtime = 250;
-      } else if (res.avg >= 30 && res.avg <= 60) {
-        pingtime = 600;
-      } else if (res.avg >= 61) {
-        pingtime = 1000;
-      }
-      if (pingtime > 600) console.log("The ping it too high, your connection would properly timeout, but we will try our best with it!");
-    });
-});
-
 module.exports = {
   login: async function ({
     email,
@@ -48,12 +21,41 @@ module.exports = {
     puppeteer.use(StealthPlugin());
 
     const browser = await puppeteer.launch({
-      headless: false
+      headless: false,
+      timeout: 0
     });
-    const page = await browser.newPage();
+    const pages = await browser.pages()
+    const page = await pages[0];
     const navigationPromise = page.waitForNavigation();
 
     try {
+      hosts.forEach(function (host) {
+        console.log("Pinging youtube.com...");
+        ping.promise.probe(host)
+          .then(function (res) {
+            const isAlive = res.alive;
+            var msg = isAlive ? "Host " + host + " is alive" + `\nTook ${res.avg} ms to reach ` + host : "Cannot connect to " + host + "!\nPlease check your connection and try again later.";
+            console.log(msg);
+            if (!isAlive) {
+              throw new Error("Connection TIMEOUT!");
+            }
+            if (res.avg < 5) {
+              pingtime = 90;
+            } else if (res.avg >= 5 && res.avg <= 10) {
+              pingtime = 100;
+            } else if (res.avg >= 11 && res.avg <= 19) {
+              pingtime = 150;
+            } else if (res.avg >= 20 && res.ave <= 29) {
+              pingtime = 250;
+            } else if (res.avg >= 30 && res.avg <= 60) {
+              pingtime = 600;
+            } else if (res.avg >= 61) {
+              pingtime = 1000;
+            }
+            if (pingtime > 600) console.log("The ping it too high, your connection would properly timeout, but we will try our best with it!");
+          });
+      });
+
       // Opening the sign in page
       page.goto("https://accounts.google.com/signin/v2/identifier" +
         "?continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Den-US%26next%3D%252F" +
@@ -114,9 +116,9 @@ module.exports = {
         console.log("Successfully logged in!\nSuccessfully verified your account!");
         const cookies = await page.cookies();
         fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(cookies, null, 2)),
-        function (err) {
-          if (err) throw err;
-        };
+          function (err) {
+            if (err) throw err;
+          };
         // require("./getCookies.js").getCookie()
         await browser.close();
       } else {

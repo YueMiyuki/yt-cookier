@@ -12,7 +12,8 @@ module.exports = {
     const browser = await puppeteer.launch({
       headless: false
     });
-    const page = await browser.newPage();
+    const pages = await browser.pages()
+    const page = await pages[0];
     const navigationPromise = page.waitForNavigation();
 
     try {
@@ -27,14 +28,19 @@ module.exports = {
       const PageCookies = await page.cookies();
       const cookieStr = JSON.stringify(PageCookies, null, 4)
 
+      fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(PageCookies, null, 2)), //Update Login
+        function (err) {
+          if (err) throw err;
+        }
+
       await browser.close();
 
       // const cookieString = fs.readFileSync("./node_modules/ytcf/cookies.json");
       const array = JSON.parse(cookieStr);
       const Rcookies = array.map(({
-        name,
-        value
-      }) =>
+          name,
+          value
+        }) =>
         `${name}=${value}`).join("; ");
 
       return Rcookies;
