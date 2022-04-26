@@ -1,4 +1,7 @@
 {
+  "name": "ytcf",
+  "description": "E",
+  "version": "0.0.1",
   "dependencies": {
     "ping": "^0.4.1",
     "puppeteer": "^13.6.0",
