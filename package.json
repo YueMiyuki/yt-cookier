@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "ping": "^0.4.1",
-    "puppeteer": "^13.6.0",
+    "puppeteer": "^14.0.0",
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0"
   }
