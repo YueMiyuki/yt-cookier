@@ -1,35 +1,15 @@
 const puppeteer = require("puppeteer-extra");
-const ping = require("ping");
 const fs = require("fs");
-
-const hosts = ["youtube.com"];
 
 async function login({ email, pass }) {
   const StealthPlugin = require("puppeteer-extra-plugin-stealth");
   puppeteer.use(StealthPlugin());
 
   const browser = await puppeteer.launch({
-    headless: false,
     timeout: 0
   });
 
   try {
-    hosts.forEach(function (host) {
-      console.log("Pinging youtube.com...");
-      ping.promise.probe(host)
-        .then(function (res) {
-          if (!res.alive) {
-            console.log(`Cannot connect to ${host}!\nPlease check your connection and try again later.`);
-            throw new Error("Connection TIMEOUT!");
-          }
-
-          console.log(`Host ${host} is alive\nTook ${res.avg} ms to reach`);
-
-          if (res.avg >= 60)
-            console.log("The ping it too high, your connection would properly timeout, but we will try our best with it!");
-        });
-    });
-
     const page = await browser.newPage();
 
     // Opening the sign in page
