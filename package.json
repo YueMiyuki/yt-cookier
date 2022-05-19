@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "ping": "^0.4.1",
+    "ping": "^0.4.2",
     "puppeteer": "^14.1.0",
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0"
