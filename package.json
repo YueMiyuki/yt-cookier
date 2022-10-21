@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "puppeteer": "^15.3.1",
+    "puppeteer": "^19.1.0",
     "puppeteer-extra": "^3.3.1",
     "puppeteer-extra-plugin-stealth": "^2.10.2"
   }
