@@ -25,8 +25,8 @@ jobs:
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
-          eslint: true
-          prettier: false
+          eslint: false
+          prettier: true
           auto_fix: true
           git_name: "ESLint"
           commit_message: "使用 ${linter} 改進代碼質量"
