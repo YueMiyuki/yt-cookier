@@ -97,7 +97,7 @@ module.exports = {
             console.log(
               '[ytcr] Wrong 2FA Secret is provided! Please check and try again.'
             )
-            page.close()
+            await page.close()
             return 'failed'
           } else if (
             Luri.includes('admin.google.com/a/cpanel') &&
@@ -106,7 +106,7 @@ module.exports = {
             console.log(
               '[ytcr] This account have no right to access youtube.com! Please try another account!'
             )
-            page.close()
+            await page.close()
             return 'failed'
           } else if (
             !Luri.startsWith('https://www.youtube.com/') &&
@@ -129,7 +129,7 @@ module.exports = {
             function (err) {
               if (err) throw err
             }
-            page.close()
+            await page.close()
             const json = {
               login: email,
               password: pass,
@@ -151,7 +151,7 @@ module.exports = {
         console.log(
           '[ytcr] This account have no right to access youtube.com! Please try another account!'
         )
-        page.close()
+        await page.close()
         return 'failed'
       } else if (
         !uri.startsWith('https://www.youtube.com/') &&
@@ -160,7 +160,7 @@ module.exports = {
         console.log(
           '[ytcr] An unexpected error occurred!\nPleace check the popped out window to check whats wrong and post an issue to:\nhttps://github.com/ItzMiracleOwO/yt-cookier/issues'
         )
-        page.close()
+        await page.close()
         return 'failed'
       } else if (url.startsWith('https://www.youtube.com/')) {
         console.log('[ytcr] Successfully logged in!')
@@ -175,7 +175,7 @@ module.exports = {
         function (err) {
           if (err) throw err
         }
-        page.close()
+        await page.close()
         const json = {
           login: email,
           password: pass,

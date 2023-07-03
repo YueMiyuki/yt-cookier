@@ -38,9 +38,6 @@ module.exports = {
                 if (err) throw err
               }
 
-              await browser.newPage()
-              await page.close()
-
               const array = JSON.parse(cookieStr)
               const Rcookies = array
                 .map(({ name, value }) => `${name}=${value}`)
@@ -49,6 +46,8 @@ module.exports = {
               await browser.newPage()
               await page.close()
               resolve(Rcookies)
+            } else {
+              return console.log('login failed')
             }
           } else {
             const cookieStr = JSON.stringify(PageCookies, null, 4)
@@ -72,7 +71,7 @@ module.exports = {
             resolve(Rcookies)
           }
         } else {
-          console.log('No cookies found, please login first')
+          return console.log('No cookies found, please login first')
         }
       } catch (e) {
         console.log(e)
