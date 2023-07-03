@@ -6,7 +6,7 @@ Usage:
 ```js
 const ytcr = require("yt-cookier");
 
-const start = async () => {
+(async function {
   const browser = await ytcr.getBrowser({
     executablePath: "", // Leaving empty so puppeteer can fetch path
     headless: false, // Normally we use headless
@@ -22,20 +22,18 @@ const start = async () => {
   if (log === "succeed") {
     const headers = await ytcr.getHeaders(
       browser,
-      "https://www.youtube.com/watch?v=qyBSYATyIUM"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
     const cookies = await ytcr.getCookies(
       browser,
-      "https://www.youtube.com/watch?v=qyBSYATyIUM"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
     console.log("headers\n" + "=============================\n", headers);
     console.log("cookies\n" + "=============================\n", cookies);
   } else {
     console.log("login failed");
   }
-};
-
-start()
+}())
 ```
 
 Using with [ytdl-core](https://www.npmjs.com/package/ytdl-core)
@@ -45,9 +43,9 @@ const ytcr = require("ytcr");
 const fs = require("node:fs");
 const ytdl = require("ytdl-core");
 
-const url = "https://www.youtube.com/watch?v=qyBSYATyIUM"
+const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
-const start = async () => {
+(async function {
   const browser = await ytcr.getBrowser({
     executablePath: "", // Leaving empty so puppeteer can fetch path
     headless: true, // Normally we use headless
@@ -84,7 +82,5 @@ const start = async () => {
   } else {
     console.log("login failed");
   }
-};
-
-start();
+})()
 ```
