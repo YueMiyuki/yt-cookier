@@ -6,7 +6,7 @@ Usage:
 ```js
 const ytcr = require("yt-cookier");
 
-const start = async () => {
+(async function {
   const browser = await ytcr.getBrowser({
     executablePath: "", // Leaving empty so puppeteer can fetch path
     headless: false, // Normally we use headless
@@ -33,9 +33,7 @@ const start = async () => {
   } else {
     console.log("login failed");
   }
-};
-
-start()
+}())
 ```
 
 Using with [ytdl-core](https://www.npmjs.com/package/ytdl-core)
@@ -47,7 +45,7 @@ const ytdl = require("ytdl-core");
 
 const url = "https://www.youtube.com/watch?v=qyBSYATyIUM"
 
-const start = async () => {
+(async function {
   const browser = await ytcr.getBrowser({
     executablePath: "", // Leaving empty so puppeteer can fetch path
     headless: true, // Normally we use headless
@@ -84,7 +82,5 @@ const start = async () => {
   } else {
     console.log("login failed");
   }
-};
-
-start();
+})()
 ```
