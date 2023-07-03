@@ -1,54 +1,83 @@
-const puppeteer = require("puppeteer-extra");
 const fs = require("fs");
 
 module.exports = {
-  getCookie: async function (url) {
-
+  getCookies: async function (browser, url) {
     console.log("Attempting to get cookies");
+    return new Promise(async (resolve) => {
+      const pages = await browser.pages();
+      const page = (await pages[0]) || (await browser.newPage());
 
-    const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-    puppeteer.use(StealthPlugin());
+      try {
+        if (fs.existsSync("./ytcr/sessionCookies.json")) {
+          const cookiesString = await fs.readFileSync(
+            "./ytcr/sessionCookies.json"
+          );
+          const cookies = JSON.parse(cookiesString);
+          await page.setCookie(...cookies);
 
-    const browser = await puppeteer.launch({
-      headless: false
+          // Opening YouTube.com
+          await page.goto(url);
+          await page.waitForSelector("#container");
+          const PageCookies = await page.cookies();
+
+          if (!JSON.stringify(PageCookies).includes("LOGIN_INFO")) {
+            console.log("Your Login session expired! Relogging...");
+            const login = await require(__dirname + "/login.js").login(
+              browser,
+              require("./ytcr/credentials.json").login,
+              require("./ytcr/credentials.json").password,
+              require("./ytcr/credentials.json").OTPtoken
+            );
+            if (login === "succeed") {
+              const LogCookies = await page.cookies();
+              const cookieStr = JSON.stringify(LogCookies, null, 4);
+
+              if (!fs.existsSync("./ytcr")) fs.mkdirSync("./ytcr");
+              fs.writeFileSync("./ytcr/sessionCookies.json", cookieStr),
+                function (err) {
+                  if (err) throw err;
+                };
+
+              await browser.newPage();
+              await page.close();
+
+              const array = JSON.parse(cookieStr);
+              const Rcookies = array
+                .map(({ name, value }) => `${name}=${value}`)
+                .join("; ");
+
+              await browser.newPage();
+              await page.close();
+              resolve(Rcookies);
+            }
+          } else {
+            const cookieStr = JSON.stringify(PageCookies, null, 4);
+
+            if (!fs.existsSync("./ytcr")) fs.mkdirSync("./ytcr");
+            fs.writeFileSync(
+              "./ytcr/sessionCookies.json",
+              JSON.stringify(PageCookies, null, 2)
+            ),
+              function (err) {
+                if (err) throw err;
+              };
+            await browser.newPage();
+            await page.close();
+
+            const array = JSON.parse(cookieStr);
+            const Rcookies = array
+              .map(({ name, value }) => `${name}=${value}`)
+              .join("; ");
+
+            resolve(Rcookies);
+          }
+        } else {
+          console.log("No cookies found, please login first");
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+      }
     });
-    const pages = await browser.pages();
-    const page = await pages[0];
-    const navigationPromise = page.waitForNavigation();
-
-    try {
-      const cookiesString = await fs.readFileSync("./node_modules/ytcf/LoginCookies.json");
-      const cookies = JSON.parse(cookiesString);
-      await page.setCookie(...cookies);
-
-      // Opening YouTube.com
-      await page.goto(url);
-      await navigationPromise;
-
-      const PageCookies = await page.cookies();
-      const cookieStr = JSON.stringify(PageCookies, null, 4);
-
-      fs.writeFileSync("./node_modules/ytcf/LoginCookies.json", JSON.stringify(PageCookies, null, 2)), //Update Login
-      function (err) {
-        if (err) throw err;
-      };
-
-      await browser.close();
-
-      // const cookieString = fs.readFileSync("./node_modules/ytcf/cookies.json");
-      const array = JSON.parse(cookieStr);
-      const Rcookies = array.map(({
-        name,
-        value
-      }) =>
-        `${name}=${value}`).join("; ");
-
-      return Rcookies;
-
-    } catch (e) {
-      throw new Error(e);
-    } finally {
-      // await browser.close();
-    }
-  }
+  },
 };

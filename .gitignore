@@ -1,3 +1,3 @@
-.idea
-node_modules
-*.json
+app.js
+node_modules/
+ytcr/
