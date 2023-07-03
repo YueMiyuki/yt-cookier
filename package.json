@@ -12,5 +12,27 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1"
-  }
+  },
+  "name": "ytcr",
+  "description": "Youtube cookier can help you get cookies and headers from youtube easily.\r In that way, you can bypass those annoying 429 Errors from ytdl.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItzMiracleOwO/yt-cookier.git"
+  },
+  "keywords": [
+    "ytdl",
+    "cookies",
+    "429"
+  ],
+  "author": "_tsuki__",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ItzMiracleOwO/yt-cookier/issues"
+  },
+  "homepage": "https://github.com/ItzMiracleOwO/yt-cookier#readme"
 }
