@@ -9,7 +9,9 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          token: ${{WORKFLOW_TOKEN}}
 
       - name: Set up Node.js
         uses: actions/setup-node@v1
