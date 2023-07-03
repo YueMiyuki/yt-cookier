@@ -22,11 +22,11 @@ const ytcr = require("yt-cookier");
   if (log === "succeed") {
     const headers = await ytcr.getHeaders(
       browser,
-      "https://www.youtube.com/watch?v=qyBSYATyIUM"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
     const cookies = await ytcr.getCookies(
       browser,
-      "https://www.youtube.com/watch?v=qyBSYATyIUM"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
     console.log("headers\n" + "=============================\n", headers);
     console.log("cookies\n" + "=============================\n", cookies);
@@ -43,7 +43,7 @@ const ytcr = require("ytcr");
 const fs = require("node:fs");
 const ytdl = require("ytdl-core");
 
-const url = "https://www.youtube.com/watch?v=qyBSYATyIUM"
+const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 (async function {
   const browser = await ytcr.getBrowser({
