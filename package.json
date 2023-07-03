@@ -4,8 +4,7 @@
     "puppeteer": "^20.7.4",
     "puppeteer-core": "^20.7.4",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "ytdl-core": "^4.11.4"
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "devDependencies": {
     "eslint": "^8.44.0",
